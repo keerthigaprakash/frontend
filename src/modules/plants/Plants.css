@@ -1,0 +1,124 @@
+.plants-page {
+  min-height: calc(100vh - 80px);
+  padding: 40px 20px;
+  background: linear-gradient(135deg, rgba(230, 255, 230, 0.2), rgba(192, 255, 203, 0.1));
+}
+
+.plants-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.plants-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.plants-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--dark-purple);
+  margin-bottom: 15px;
+}
+
+.plants-subtitle {
+  font-size: 16px;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.plants-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 28px;
+}
+
+/* PLANT CARD */
+.plant-sample-card {
+  background: var(--card-dark, #1a1a2e);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.plant-sample-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+}
+
+.plant-card-image {
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+}
+
+.plant-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.plant-sample-card:hover .plant-card-image img {
+  transform: scale(1.08);
+}
+
+.plant-card-body {
+  padding: 18px 20px 22px;
+}
+
+.plant-card-body h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #a3e635;
+  margin-bottom: 6px;
+}
+
+.plant-card-body p {
+  font-size: 14px;
+  color: #bbb;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.plant-price {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  padding: 5px 16px;
+  border-radius: 8px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .plants-page {
+    padding: 30px 15px;
+  }
+
+  .plants-title {
+    font-size: 28px;
+  }
+
+  .plants-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .plants-page {
+    padding: 20px 10px;
+  }
+
+  .plants-title {
+    font-size: 22px;
+  }
+
+  .plants-grid {
+    grid-template-columns: 1fr;
+  }
+}

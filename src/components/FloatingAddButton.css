@@ -1,0 +1,45 @@
+.floating-add-btn {
+  position: fixed;
+  right: 30px;
+  top: 100px;
+  background: linear-gradient(135deg, #FFD700, #FFA500); /* Golden theme for Admin */
+  color: #1a1a2e;
+  border: 2px solid #fff;
+  border-radius: 50px;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 5px 25px rgba(255, 215, 0, 0.4);
+  cursor: pointer;
+  z-index: 999;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.floating-add-btn:hover {
+  transform: scale(1.1) translateY(-5px);
+  box-shadow: 0 8px 30px rgba(255, 77, 166, 0.6);
+}
+
+.plus-icon {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.btn-text {
+  font-weight: 700;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .floating-add-btn {
+    right: 20px;
+    bottom: 20px;
+    padding: 15px;
+  }
+  
+  .btn-text {
+    display: none;
+  }
+}

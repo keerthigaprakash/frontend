@@ -1,0 +1,25 @@
+.main-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+}
+
+.content.with-navbar {
+  padding-top: 80px; /* Offset for fixed navbar */
+}
+
+@media (max-width: 768px) {
+  .content.with-navbar {
+    padding-top: 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .content.with-navbar {
+    padding-top: 60px;
+  }
+}

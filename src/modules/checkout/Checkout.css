@@ -1,0 +1,238 @@
+.checkout-page {
+  min-height: calc(100vh - 80px);
+  padding: 40px 20px;
+  background: linear-gradient(135deg, rgba(230, 230, 250, 0.2), rgba(255, 192, 203, 0.1));
+}
+
+.checkout-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.checkout-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--dark-purple);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.checkout-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.checkout-form {
+  background: white;
+  padding: 30px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+.form-section {
+  margin-bottom: 30px;
+}
+
+.form-section h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dark-purple);
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--primary-lavender);
+  padding-bottom: 10px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #555;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid var(--primary-lavender);
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: var(--transition);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--primary-pink);
+  box-shadow: 0 0 0 3px rgba(255, 192, 203, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.payment-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.payment-option {
+  padding: 15px;
+  border: 2px solid var(--primary-lavender);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+  font-weight: 600;
+}
+
+.payment-option:hover {
+  border-color: var(--primary-pink);
+  background: rgba(255, 192, 203, 0.1);
+}
+
+.payment-option.selected {
+  background: var(--primary-pink);
+  color: white;
+  border-color: var(--primary-pink);
+}
+
+.place-order-btn {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, var(--primary-pink), #FF69B4);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 20px;
+}
+
+.place-order-btn:hover {
+  background: linear-gradient(135deg, #FF69B4, var(--primary-pink));
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.order-summary {
+  background: white;
+  padding: 30px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.summary-header {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dark-purple);
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--primary-lavender);
+  padding-bottom: 15px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--primary-lavender);
+  font-size: 14px;
+}
+
+.summary-item:last-of-type {
+  border-bottom: none;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary-pink);
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 2px solid var(--primary-lavender);
+}
+
+@media (max-width: 768px) {
+  .checkout-content {
+    grid-template-columns: 1fr;
+  }
+
+  .order-summary {
+    position: static;
+  }
+
+  .payment-options {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-form,
+  .order-summary {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .checkout-page {
+    padding: 20px 10px;
+  }
+
+  .checkout-title {
+    font-size: 24px;
+  }
+
+  .form-section h3 {
+    font-size: 16px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .place-order-btn {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
+/* Scrollable summary items */
+.order-summary > div {
+  max-height: 300px;
+  overflow-y: auto;
+  color: black;
+}
+
+/* Payment info box below summary */
+.order-summary div:last-child {
+  margin-top: 20px;
+  padding: 15px;
+  background: var(--primary-lavender);
+  border-radius: 10px;
+  text-align: center;
+  color: black;
+  font-weight: 600;
+  font-size: 14px;
+}
