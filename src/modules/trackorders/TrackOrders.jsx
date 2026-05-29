@@ -80,8 +80,6 @@ const TrackOrders = () => {
     socket.on('connect', () => {
       console.log('🔌 Connected to order tracking');
       setIsConnected(true);
-      // Fetch orders after socket is ready so we can join rooms
-      fetchOrders();
     });
 
     socket.on('orderStatusUpdate', (data) => {
@@ -116,6 +114,8 @@ const TrackOrders = () => {
     socket.on('connect_error', () => {
       setIsConnected(false);
     });
+
+    fetchOrders();
 
     return () => {
       socket.disconnect();

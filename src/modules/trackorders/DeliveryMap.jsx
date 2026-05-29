@@ -207,6 +207,7 @@ const AnimatedDeliveryMarker = ({ coords }) => {
 // ─── Main DeliveryMap Component ──────────────────────────────────
 const DeliveryMap = ({ deliveryCoords, customerAddress, socketEmitter = null, orderId = null }) => {
   const storeCoords = { lat: 11.0018, lng: 77.0282 };
+  const canBroadcastLocation = Boolean(socketEmitter && orderId);
 
   const [destCoords, setDestCoords] = useState({ lat: 11.0168, lng: 76.9558 });
   const [liveCoords, setLiveCoords] = useState(null);
@@ -218,7 +219,7 @@ const DeliveryMap = ({ deliveryCoords, customerAddress, socketEmitter = null, or
   const [gpsStatus, setGpsStatus] = useState('waiting');
   const watchIdRef = useRef(null);
 
-  const activeCoords = liveCoords || deliveryCoords;
+  const activeCoords = canBroadcastLocation ? liveCoords || deliveryCoords : deliveryCoords;
 
   // Routing States
   const [fullRoutePath, setFullRoutePath] = useState([]);
@@ -313,6 +314,11 @@ const DeliveryMap = ({ deliveryCoords, customerAddress, socketEmitter = null, or
 
   // ── Device GPS Watcher ─────────────────────────────────────────
   useEffect(() => {
+    if (!canBroadcastLocation) {
+      setGpsStatus(deliveryCoords ? 'active' : 'waiting');
+      return;
+    }
+
     if (!('geolocation' in navigator)) {
       setGpsStatus('error');
       return;
@@ -330,13 +336,11 @@ const DeliveryMap = ({ deliveryCoords, customerAddress, socketEmitter = null, or
         setLiveCoords(newCoords);
         setGpsStatus('active');
 
-        if (socketEmitter && orderId) {
-          socketEmitter('updateDeliveryLocation', {
-            orderId,
-            lat: newCoords.lat,
-            lng: newCoords.lng,
-          });
-        }
+        socketEmitter('updateDeliveryLocation', {
+          orderId,
+          lat: newCoords.lat,
+          lng: newCoords.lng,
+        });
       },
       (err) => {
         console.warn('GPS Error:', err.message);
@@ -348,7 +352,7 @@ const DeliveryMap = ({ deliveryCoords, customerAddress, socketEmitter = null, or
     return () => {
       if (watchIdRef.current) navigator.geolocation.clearWatch(watchIdRef.current);
     };
-  }, [socketEmitter, orderId]);
+  }, [canBroadcastLocation, socketEmitter, orderId, deliveryCoords]);
 
   // ── Accumulate Path History ────────────────────────────────────
   useEffect(() => {
@@ -458,7 +462,9 @@ const DeliveryMap = ({ deliveryCoords, customerAddress, socketEmitter = null, or
         {/* GPS Status */}
         <div className={`map-gps-status ${gpsClass}`}>
           <span className={`gps-dot ${gpsStatus === 'active' ? 'blink-gps' : ''}`} />
-          {gpsStatus === 'active' ? `GPS ±${accuracy}m` : gpsStatus === 'error' ? 'GPS Off' : 'GPS…'}
+          {canBroadcastLocation
+            ? (gpsStatus === 'active' ? `GPS ±${accuracy}m` : gpsStatus === 'error' ? 'GPS Off' : 'GPS…')
+            : (activeCoords ? 'Driver GPS' : 'Awaiting GPS')}
         </div>
       </div>
 

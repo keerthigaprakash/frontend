@@ -22,6 +22,10 @@ const DeliveryOrders = () => {
       console.log('🚚 Delivery socket connected');
     });
 
+    socketRef.current.on('orderAssigned', () => {
+      fetchAssignedOrders();
+    });
+
     return () => {
       if (socketRef.current) socketRef.current.disconnect();
     };

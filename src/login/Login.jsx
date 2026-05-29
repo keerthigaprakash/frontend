@@ -29,10 +29,15 @@ const Login = ({ onLogin }) => {
       if (data.success) {
         if (data.data.token) localStorage.setItem('token', data.data.token);
         onLogin(data.data.user);
-        navigate('/');
+        if (data.data.user.role === 'admin') {
+          navigate('/admin');
+        } else if (data.data.user.role === 'delivery') {
+          navigate('/delivery-orders');
+        } else {
+          navigate('/');
+        }
       } else {
-        // Show detailed error messages if provided, otherwise fallback
-        const errMsg = data.message || (data.errors ? data.errors.join(', ') : 'Invalid email or password');
+        const errMsg = data.message || (data.errors ? data.errors.join(', ') : 'Invalid email or password.');
         setError(errMsg);
       }
     } catch (err) {
@@ -55,8 +60,8 @@ const Login = ({ onLogin }) => {
     <div className="login-page">
       <div className="login-container">
         <div className="login-header">
-          <h1>Welcome!!</h1>
-          <p>Sign in to your account or continue as guest</p>
+          <h1>Welcome back!</h1>
+          <p>Already registered? Log in below. If not, please sign up first.</p>
         </div>
 
         {error && <div className="error-message" style={{ color: '#ff4d4d', textAlign: 'center', marginBottom: '15px', fontSize: '14px' }}>{error}</div>}

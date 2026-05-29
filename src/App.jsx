@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import './App.css';
+import Admin from './admin/Admin.jsx';
 
 // Components
 import Navbar from './components/Navbar';
@@ -23,8 +23,15 @@ import TrackOrders from './modules/trackorders/TrackOrders.jsx';
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('user') || 'null');
+    } catch {
+      localStorage.removeItem('user');
+      return null;
+    }
+  });
+  const [isLoggedIn, setIsLoggedIn] = useState(() => Boolean(localStorage.getItem('token') && localStorage.getItem('user')));
   const [showSignup, setShowSignup] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -69,6 +76,7 @@ function App() {
   const clearCart = () => setCartItems([]);
 
   const handleAuthSuccess = (userData) => {
+    localStorage.setItem('user', JSON.stringify(userData));
     setUser(userData);
     setIsLoggedIn(true);
   };
@@ -147,6 +155,7 @@ function App() {
                 <Navigate to="/" replace />
               )
             } />
+            <Route path="/admin" element={isLoggedIn && user?.role === 'admin' ? <Admin /> : <Navigate to="/login" replace />} />
             <Route path="*" element={<Navigate to={isLoggedIn ? "/" : "/login"} replace />} />
           </Routes>
         </div>

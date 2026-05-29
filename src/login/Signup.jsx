@@ -34,7 +34,11 @@ const Signup = ({ onSignup }) => {
       const data = await response.json();
 
       if (data.success) {
+        // Store token if provided
+        if (data.data.token) localStorage.setItem('token', data.data.token);
         onSignup(data.data.user);
+        // Show success message briefly then redirect
+        alert('Account created successfully! Welcome to Bloom & Bliss 🌸');
         navigate('/');
       } else {
         setError(data.message || 'Registration failed');
@@ -55,7 +59,7 @@ const Signup = ({ onSignup }) => {
       <div className="login-container">
         <div className="login-header">
           <h1>Create Account</h1>
-          <p>Join Bloom & Bliss today 🌸</p>
+          <p>Sign up first to use the app. After registration, log in with your new account.</p>
         </div>
 
         {error && <div className="error-message" style={{ color: '#ff4d4d', textAlign: 'center', marginBottom: '15px', fontSize: '14px' }}>{error}</div>}
