@@ -31,7 +31,9 @@ const Login = ({ onLogin }) => {
         onLogin(data.data.user);
         navigate('/');
       } else {
-        setError(data.message || 'Invalid email or password');
+        // Show detailed error messages if provided, otherwise fallback
+        const errMsg = data.message || (data.errors ? data.errors.join(', ') : 'Invalid email or password');
+        setError(errMsg);
       }
     } catch (err) {
       if (err.name === 'TypeError' && err.message === 'Failed to fetch') {
