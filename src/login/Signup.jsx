@@ -34,7 +34,6 @@ const Signup = ({ onSignup }) => {
       const data = await response.json();
 
       if (data.success) {
-        if (data.data.token) localStorage.setItem('token', data.data.token);
         onSignup(data.data.user);
         navigate('/');
       } else {
