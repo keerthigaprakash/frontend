@@ -1,7 +1,12 @@
 // src/config.js
-// Dynamically resolve hostname so it works on both localhost and mobile IP
-const host = typeof window !== 'undefined' ? window.location.hostname : 'localhost';
-const port = '5000';
+// Use Render backend in production, localhost in development
+const PRODUCTION_URL = 'https://backend-4qls.onrender.com';
+const isDev = typeof window !== 'undefined' && window.location.hostname === 'localhost';
 
-export const API_BASE_URL = `http://${host}:${port}/api`;
-export const SOCKET_URL = `http://${host}:${port}`;
+export const API_BASE_URL = isDev
+  ? `http://localhost:5000/api`
+  : `${PRODUCTION_URL}/api`;
+
+export const SOCKET_URL = isDev
+  ? `http://localhost:5000`
+  : PRODUCTION_URL;
