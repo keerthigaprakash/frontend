@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
 import logo from '../assets/logo.png';
 
-const Navbar = ({ cartCount = 0, user, onAddItem }) => {
+const Navbar = ({ cartCount = 0, user, onAddItem, onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === '/';
@@ -78,9 +78,13 @@ const Navbar = ({ cartCount = 0, user, onAddItem }) => {
           🛒
           {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
         </Link>
-        <Link to="/login" className="navbar-icon" title={user?.role === 'admin' ? 'Admin Profile' : (user?.role === 'delivery' ? 'Delivery Profile' : 'Profile')}>
-          {user?.role === 'admin' ? '👑' : (user?.role === 'delivery' ? '🚚' : '👤')}
-        </Link>
+        {user ? (
+          <button className="navbar-icon" onClick={onLogout} title="Logout" style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer' }}>🚪</button>
+        ) : (
+          <Link to="/login" className="navbar-icon" title={user?.role === 'admin' ? 'Admin Profile' : (user?.role === 'delivery' ? 'Delivery Profile' : 'Profile')}>
+            {user?.role === 'admin' ? '👑' : (user?.role === 'delivery' ? '🚚' : '👤')}
+          </Link>
+        )}
       </div>
     </nav>
   );

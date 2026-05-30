@@ -24,10 +24,22 @@ const Login = ({ onLogin }) => {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        data = null;
+      }
 
-      if (data.success) {
-        if (data.data.token) localStorage.setItem('token', data.data.token);
+      if (!response.ok || !data?.success) {
+        const responseError = data?.message || (data?.errors ? data.errors.join(', ') : null);
+        setError(responseError || `Login failed (${response.status})`);
+        console.error('Login failed:', response.status, responseError, data);
+        return;
+      }
+
+      if (data.data.token) localStorage.setItem('token', data.data.token);
+      if (data.data.user) {
         onLogin(data.data.user);
         if (data.data.user.role === 'admin') {
           navigate('/admin');
@@ -37,10 +49,10 @@ const Login = ({ onLogin }) => {
           navigate('/');
         }
       } else {
-        const errMsg = data.message || (data.errors ? data.errors.join(', ') : 'Invalid email or password.');
-        setError(errMsg);
+        setError('Login succeeded but no user data returned.');
       }
     } catch (err) {
+      console.error('Login request error:', err);
       if (err.name === 'TypeError' && err.message === 'Failed to fetch') {
         setError('Server not reachable. Please check your connection.');
       } else {
@@ -64,11 +76,15 @@ const Login = ({ onLogin }) => {
           <p>Already registered? Log in below. If not, please sign up first.</p>
         </div>
 
-        {error && <div className="error-message" style={{ color: '#ff4d4d', textAlign: 'center', marginBottom: '15px', fontSize: '14px' }}>{error}</div>}
+        {error && (
+          <div className="error-message" style={{ color: '#ff4d4d', textAlign: 'center', marginBottom: '15px', fontSize: '14px' }}>
+            {error}
+          </div>
+        )}
 
         <form className="login-form" onSubmit={handleLogin}>
           <div className="login-form-group">
-            <label htmlFor="email">Email Address</label> <br /><br />
+            <label htmlFor="email">Email Address</label>
             <input
               type="email"
               id="email"
@@ -80,7 +96,7 @@ const Login = ({ onLogin }) => {
           </div>
 
           <div className="login-form-group">
-            <label htmlFor="password">Password</label><br /><br />
+            <label htmlFor="password">Password</label>
             <input
               type="password"
               id="password"

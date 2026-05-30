@@ -31,19 +31,24 @@ const Signup = ({ onSignup }) => {
         body: JSON.stringify({ name, email, password }),
       });
 
-      const data = await response.json();
-
-      if (data.success) {
-        // Store token if provided
-        if (data.data.token) localStorage.setItem('token', data.data.token);
-        onSignup(data.data.user);
-        // Show success message briefly then redirect
-        alert('Account created successfully! Welcome to Bloom & Bliss 🌸');
-        navigate('/');
-      } else {
-        setError(data.message || 'Registration failed');
+      let data;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        data = null;
       }
+
+      if (!response.ok || !data?.success) {
+        const responseError = data?.message || (data?.errors ? data.errors.join(', ') : null);
+        setError(responseError || `Registration failed (${response.status})`);
+        console.error('Signup failed:', response.status, responseError, data);
+        return;
+      }
+
+      alert('Account created successfully! Please log in using your new credentials.');
+      navigate('/login');
     } catch (err) {
+      console.error('Signup request error:', err);
       if (err.name === 'TypeError' && err.message === 'Failed to fetch') {
         setError('Server not reachable. Please check your connection.');
       } else {
@@ -66,7 +71,7 @@ const Signup = ({ onSignup }) => {
 
         <form className="login-form" onSubmit={handleSignup}>
           <div className="login-form-group">
-            <label htmlFor="name">Full Name</label><br /><br />
+            <label htmlFor="name">Full Name</label>
             <input
               type="text"
               id="name"
@@ -78,7 +83,7 @@ const Signup = ({ onSignup }) => {
           </div>
 
           <div className="login-form-group">
-            <label htmlFor="email">Email Address</label><br /><br />
+            <label htmlFor="email">Email Address</label>
             <input
               type="email"
               id="email"
@@ -90,7 +95,7 @@ const Signup = ({ onSignup }) => {
           </div>
 
           <div className="login-form-group">
-            <label htmlFor="password">Password</label><br /><br />
+            <label htmlFor="password">Password</label>
             <input
               type="password"
               id="password"
@@ -102,7 +107,7 @@ const Signup = ({ onSignup }) => {
           </div>
 
           <div className="login-form-group">
-            <label htmlFor="confirmPassword">Confirm Password</label><br /><br />
+            <label htmlFor="confirmPassword">Confirm Password</label>
             <input
               type="password"
               id="confirmPassword"
