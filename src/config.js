@@ -1,12 +1,11 @@
 // src/config.js
-// Use Render backend in production, localhost in development
-const PRODUCTION_URL = 'https://backend-4qls.onrender.com';
+// Use Vite environment variables in production, localhost in development
 const isDev = typeof window !== 'undefined' && window.location.hostname === 'localhost';
 
 export const API_BASE_URL = isDev
   ? 'http://localhost:5000/api'
-  : `${PRODUCTION_URL}/api`;
+  : import.meta.env.VITE_API_BASE_URL || 'https://backend-cedj.onrender.com/api';
 
 export const SOCKET_URL = isDev
   ? 'http://localhost:5000'
-  : PRODUCTION_URL;
+  : import.meta.env.VITE_SOCKET_URL || 'https://backend-cedj.onrender.com';
